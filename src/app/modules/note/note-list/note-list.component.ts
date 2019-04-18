@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { NoteModel } from 'src/app/models/note.model';
 
-const count = 5;
-const fakeDataUrl =
-  'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
+import { LoadNotesAction } from '../state/note.actions';
+import { selectNoteStateList } from '../state/note.selectors';
 
 @Component({
   selector: 'app-note-list',
@@ -14,31 +17,45 @@ const fakeDataUrl =
 export class NoteListComponent implements OnInit {
   initLoading = true;
   loadingMore = false;
-  list: Array<{ loading: boolean; name: any }> = [];
+  list$: Observable<NoteModel[]>;
+  numRowsDisplayed = 0;
+  numRowsPerPage = 5;
+  reachedEnd = false;
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly msg: NzMessageService,
+    private readonly store: Store<any>,
+  ) {}
 
   ngOnInit(): void {
-    this.getData((res: any) => {
-      this.list = res.results;
-      this.initLoading = false;
-    });
+    setTimeout(() => {
+      this.list$ = this.store.pipe(
+        select(selectNoteStateList),
+        tap(list => {
+          this.initLoading = false;
+          this.loadingMore = false;
+          this.checkIfReachedEnd(list);
+        }),
+      );
+      this.store.dispatch(new LoadNotesAction({ from: 0, to: this.numRowsPerPage }));
+    }, 250);
   }
 
-  getData(callback: (res: any) => void): void {
-    this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
+  checkIfReachedEnd(list: NoteModel[]) {
+    if (list.filter(item => item.loading).join()) {
+      return;
+    }
+    this.reachedEnd =
+      this.numRowsDisplayed == list.length ? (this.msg.info('There is no more notes.'), true) : false;
+    this.numRowsDisplayed = list.length;
   }
 
   onLoadMore(): void {
     this.loadingMore = true;
-    this.list = this.list.concat(
-      [...Array(count)].fill({ loading: true, name: {} }),
+    this.store.dispatch(
+      new LoadNotesAction({ from: 0, to: this.numRowsDisplayed + this.numRowsPerPage }),
     );
-    this.getData((res: any) => {
-      this.list = this.list.slice(0, -5);
-      this.list = this.list.concat(res.results);
-      this.loadingMore = false;
-    });
   }
 
   edit(item: any): void {
