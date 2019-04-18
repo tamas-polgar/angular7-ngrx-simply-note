@@ -15,16 +15,14 @@ export class NoteEffects {
     ofType<LoadNotesActionPending>(NoteActionTypes.LoadNoteActionsPending),
     mergeMap(action => {
       return Observable.create((obs: Observer<Action>) => {
-        setTimeout(() => {
-          const from = action.payload.from;
-          const to = action.payload.to;
-          const storedList = JSON.parse(localStorage.getItem('SIMPLYNOTE_NOTE_LIST')) as any[];
-          obs.next(
-            new LoadNotesActionOk({
-              list: storedList ? storedList.slice(from, to) : [],
-            }),
-          );
-        }, 250);
+        const from = action.payload.from;
+        const to = action.payload.to;
+        const storedList = JSON.parse(localStorage.getItem('SIMPLYNOTE_NOTE_LIST')) as any[];
+        obs.next(
+          new LoadNotesActionOk({
+            list: storedList ? storedList.slice(from, to) : [],
+          }),
+        );
       });
     }),
   );

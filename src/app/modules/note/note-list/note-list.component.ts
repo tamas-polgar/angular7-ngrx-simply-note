@@ -29,7 +29,7 @@ export class NoteListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    setTimeout(() => this.initList(), 250);
+    this.initList();
   }
 
   initList() {

@@ -1,3 +1,13 @@
+<nz-page-header nzBackIcon (nzBack)="goBack()">
+  <nz-page-header-title>Title</nz-page-header-title>
+  <nz-page-header-subtitle>This is a subtitle</nz-page-header-subtitle>
+  <nz-page-header-extra>
+    <button nz-button nzType="primary" (click)="save()" [nzLoading]="isLoading">
+      <i nz-icon type="save"></i>Save
+    </button>
+  </nz-page-header-extra>
+</nz-page-header>
+
 <p>
   note-single works!
 </p>
