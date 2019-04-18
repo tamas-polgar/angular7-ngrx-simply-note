@@ -6,13 +6,17 @@ import { StoreModule } from '@ngrx/store';
 
 import { SharedModule } from '../shared/shared.module';
 import { NoteListComponent } from './note-list/note-list.component';
+import { NoteSingleComponent } from './note-single/note-single.component';
 import { NoteEffects } from './state/note.effects';
 import * as fromNote from './state/note.reducer';
 
-const routes: Routes = [{ path: '', component: NoteListComponent }];
+const routes: Routes = [
+  { path: '', component: NoteListComponent },
+  { path: ':id', component: NoteSingleComponent },
+];
 
 @NgModule({
-  declarations: [NoteListComponent],
+  declarations: [NoteListComponent, NoteSingleComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

@@ -29,21 +29,23 @@ export class NoteListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.list$ = this.store.pipe(
-        select(selectNoteStateList),
-        tap(list => {
-          this.initLoading = false;
-          this.loadingMore = false;
-          this.checkIfReachedEnd(list);
-        }),
-      );
-      this.store.dispatch(new LoadNotesAction({ from: 0, to: this.numRowsPerPage }));
-    }, 250);
+    setTimeout(() => this.initList(), 250);
+  }
+
+  initList() {
+    this.list$ = this.store.pipe(
+      select(selectNoteStateList),
+      tap(list => {
+        this.initLoading = false;
+        this.loadingMore = false;
+        this.checkIfReachedEnd(list);
+      }),
+    );
+    this.store.dispatch(new LoadNotesAction({ from: 0, to: this.numRowsPerPage }));
   }
 
   checkIfReachedEnd(list: NoteModel[]) {
-    if (list.filter(item => item.loading).join()) {
+    if (list.filter(item => item.loading).join() || list.length == 0) {
       return;
     }
     this.reachedEnd =

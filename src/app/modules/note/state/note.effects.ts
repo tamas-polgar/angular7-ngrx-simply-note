@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { Observable, Observer } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
@@ -13,7 +14,7 @@ export class NoteEffects {
   loadOK$: Observable<any> = this.actions$.pipe(
     ofType<LoadNotesActionPending>(NoteActionTypes.LoadNoteActionsPending),
     mergeMap(action => {
-      return Observable.create((obs: Observer<any>) => {
+      return Observable.create((obs: Observer<Action>) => {
         setTimeout(() => {
           const from = action.payload.from;
           const to = action.payload.to;
