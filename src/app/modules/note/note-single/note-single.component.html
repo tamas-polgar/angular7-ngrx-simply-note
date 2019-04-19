@@ -1,13 +1,41 @@
 <nz-page-header nzBackIcon (nzBack)="goBack()">
-  <nz-page-header-title>Title</nz-page-header-title>
-  <nz-page-header-subtitle>This is a subtitle</nz-page-header-subtitle>
+  <nz-page-header-title [innerHTML]="title || (editedNoteId ? 'Edit note' : 'Create a new note')">
+  </nz-page-header-title>
+  <nz-page-header-subtitle> </nz-page-header-subtitle>
   <nz-page-header-extra>
-    <button nz-button nzType="primary" (click)="save()" [nzLoading]="isLoading">
+    <button
+      nz-button
+      nzType="primary"
+      (click)="save()"
+      [nzLoading]="isLoading"
+      [disabled]="!isReady || !title"
+    >
       <i nz-icon type="save"></i>Save
     </button>
   </nz-page-header-extra>
 </nz-page-header>
 
-<p>
-  note-single works!
-</p>
+<section *ngIf="noteFound; else notFoundTemplate">
+  <nz-divider nzText="Write something"></nz-divider>
+
+  <div class="editor-wrapper">
+    <div id="editor-context"></div>
+  </div>
+</section>
+
+<ng-template #notFoundTemplate>
+  <nz-empty
+    [nzNotFoundImage]="
+      'https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original'
+    "
+    [nzNotFoundContent]="contentTpl"
+    [nzNotFoundFooter]="footerTpl"
+  >
+    <ng-template #contentTpl>
+      <span> Note not found </span>
+    </ng-template>
+    <ng-template #footerTpl>
+      <button nz-button nzType="primary" [routerLink]="['/note/create']">Create one now</button>
+    </ng-template>
+  </nz-empty>
+</ng-template>

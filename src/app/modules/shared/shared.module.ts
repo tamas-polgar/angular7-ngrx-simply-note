@@ -8,6 +8,6 @@ import { en_US, NgZorroAntdModule, NZ_I18N, NzI18nModule } from 'ng-zorro-antd';
   imports: [CommonModule, ReactiveFormsModule, NgZorroAntdModule, NzI18nModule],
 
   providers: [{ provide: NZ_I18N, useValue: en_US }],
-  exports: [NgZorroAntdModule, NzI18nModule],
+  exports: [NgZorroAntdModule, NzI18nModule, ReactiveFormsModule],
 })
 export class SharedModule {}

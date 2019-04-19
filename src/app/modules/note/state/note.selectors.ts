@@ -13,3 +13,18 @@ export const selectNoteStateListLength = createSelector(
   selectNoteState,
   (state: NoteState) => state.list.length,
 );
+
+export const selectNoteStateLastInsertedId = createSelector(
+  selectNoteState,
+  (state: NoteState) => state.lastInsertedId,
+);
+
+export const selectNoteStateFocusedOn = createSelector(
+  selectNoteState,
+  (state: NoteState) => state.focusedOn,
+);
+
+export const selectNoteStateLastEditedId = createSelector(
+  selectNoteState,
+  (state: NoteState) => state.lastEditedId,
+);

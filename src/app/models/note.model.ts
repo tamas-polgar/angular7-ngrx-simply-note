@@ -2,8 +2,8 @@ export interface NoteModel {
   id: number;
   title: string;
   description: string;
-  content: string;
-  createdAt: Date;
-  editedAt: Date;
+  content: { blocks: any[]; time: number };
+  createdAt: number;
+  editedAt: number;
   loading?: boolean;
 }
