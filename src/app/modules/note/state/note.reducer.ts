@@ -54,11 +54,6 @@ export function reducer(state = initialState, action: NoteActions): NoteState {
         ...state,
         focusedOn: undefined,
       };
-    case NoteActionTypes.LoadOneNoteActionsKo:
-      return {
-        ...state,
-        focusedOn: undefined,
-      };
     case NoteActionTypes.DeleteNoteAction:
       const newList = state.list.map(n => ({
         ...n,
