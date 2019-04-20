@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'note', loadChildren: './modules/note/note.module#NoteModule' },
+  {
+    path: 'note',
+    loadChildren: './modules/note/note.module#NoteModule',
+  },
   {
     path: '',
     redirectTo: 'note',

@@ -43,6 +43,11 @@ export function reducer(state = initialState, action: NoteActions): NoteState {
         ...state,
         lastEditedId: action.payload.note.id,
       };
+    case NoteActionTypes.LoadOneNoteAction:
+      return {
+        ...state,
+        focusedOn: null,
+      };
     case NoteActionTypes.LoadOneNoteActionsOk:
       return {
         ...state,

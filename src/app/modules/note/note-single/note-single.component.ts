@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Checklist from '@editorjs/checklist';
 import EditorJS from '@editorjs/editorjs';
@@ -41,7 +41,7 @@ const NEW_NOTE_INIT = {
   templateUrl: './note-single.component.html',
   styleUrls: ['./note-single.component.less'],
 })
-export class NoteSingleComponent implements OnInit {
+export class NoteSingleComponent implements OnInit, OnDestroy {
   editor: EditorJS;
   noteFound = true;
   isLoading = false;
@@ -55,6 +55,10 @@ export class NoteSingleComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
   ) {}
+
+  ngOnDestroy() {
+    this.editor.destroy();
+  }
 
   ngOnInit() {
     this.editedNoteId = this.route.snapshot.params.id || null;
@@ -72,7 +76,7 @@ export class NoteSingleComponent implements OnInit {
 
   listenToEditedNote() {
     this.store.pipe(select(selectNoteStateFocusedOn)).subscribe(note => {
-      if (note) {
+      if (note && note.id == this.editedNoteId) {
         this.initEditor(note.content as any);
       } else if (note === undefined) {
         this.noteFound = false;
@@ -87,9 +91,10 @@ export class NoteSingleComponent implements OnInit {
         this.editor ||
         new EditorJS({
           onReady: () => this.formChanged(),
-          holderId: 'editor-context',
           onChange: () => this.formChanged(),
+          holderId: 'editor-context',
           autofocus: true,
+          data: initialData,
           tools: {
             header: Header,
             list: List,
@@ -97,7 +102,6 @@ export class NoteSingleComponent implements OnInit {
             quote: Quote,
             image: SimpleImage,
           },
-          data: initialData,
         });
     }, 250);
   }
