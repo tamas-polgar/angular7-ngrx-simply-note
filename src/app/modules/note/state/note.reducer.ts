@@ -7,6 +7,7 @@ export interface NoteState {
   focusedOn: NoteModel;
   lastInsertedId: number;
   lastEditedId: number;
+  reachedEnd: boolean;
 }
 
 export const initialState: NoteState = {
@@ -14,11 +15,12 @@ export const initialState: NoteState = {
   focusedOn: null,
   lastInsertedId: null,
   lastEditedId: null,
+  reachedEnd: false,
 };
 
 export function reducer(state = initialState, action: NoteActions): NoteState {
   switch (action.type) {
-    case NoteActionTypes.LoadNoteActionsPending:
+    case NoteActionTypes.LoadNoteAction:
       return {
         ...state,
         list: state.list.concat([
@@ -29,6 +31,7 @@ export function reducer(state = initialState, action: NoteActions): NoteState {
       return {
         ...state,
         list: action.payload.list,
+        reachedEnd: action.payload.reachedEnd,
       };
     case NoteActionTypes.AddNoteActionOk:
       return {
@@ -50,6 +53,25 @@ export function reducer(state = initialState, action: NoteActions): NoteState {
       return {
         ...state,
         focusedOn: undefined,
+      };
+    case NoteActionTypes.LoadOneNoteActionsKo:
+      return {
+        ...state,
+        focusedOn: undefined,
+      };
+    case NoteActionTypes.DeleteNoteAction:
+      const newList = state.list.map(n => ({
+        ...n,
+        loading: n.id == action.payload.note.id ? true : false,
+      }));
+      return {
+        ...state,
+        list: newList,
+      };
+    case NoteActionTypes.DeleteNoteActionOk:
+      return {
+        ...state,
+        list: action.payload.list,
       };
     default:
       return state;

@@ -9,7 +9,7 @@
     nzTitle="new note"
     [routerLink]="['/note/create']"
   >
-    <i nz-icon type="edit"></i>
+    <i nz-icon type="file-add"></i>
   </button>
 </nz-header>
 
@@ -18,7 +18,6 @@
     class="demo-loadmore-list"
     [nzDataSource]="list$ | async"
     [nzItemLayout]="'horizontal'"
-    [nzLoading]="initLoading"
     [nzRenderItem]="item"
     [nzLoadMore]="loadMore"
   >
@@ -26,26 +25,24 @@
       <nz-list-item [nzActions]="item.loading ? [] : [editAction, moreAction]">
         <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzAvatar]="false" [nzLoading]="item.loading">
           <ng-template #editAction>
-            <a [routerLink]="['/note', 'edit', item.id]">edit</a>
+            <a [routerLink]="['/note', 'edit', item.id]"><i nz-icon type="edit"></i></a>
           </ng-template>
           <ng-template #moreAction>
-            <a (click)="edit(item)">delete</a>
+            <a (click)="delete(item)"><i nz-icon type="delete"></i></a>
           </ng-template>
           <nz-list-item-meta [nzTitle]="titleTemplate" [nzDescription]="descTemplate">
             <ng-template #titleTemplate>
-              <a [routerLink]="['/note', 'edit', item.id]">
-                {{ item.title }}
-              </a>
+              <a [routerLink]="['/note', 'edit', item.id]" [innerHTML]="item.title"> </a>
             </ng-template>
             <ng-template #descTemplate>
-              {{ item.description }}
+              <span [innerHTML]="item.description"> </span>
             </ng-template>
           </nz-list-item-meta>
         </nz-skeleton>
       </nz-list-item>
     </ng-template>
     <ng-template #loadMore>
-      <div class="loadmore" *ngIf="!reachedEnd && numRowsDisplayed">
+      <div class="loadmore" *ngIf="!(isEnd$ | async)">
         <button nz-button *ngIf="!loadingMore && !initLoading" (click)="onLoadMore()">
           loading more
         </button>

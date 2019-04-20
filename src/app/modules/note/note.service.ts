@@ -64,4 +64,19 @@ export class NoteService {
       }, this.rand());
     });
   }
+
+  delete(note: NoteModel): Observable<NoteModel[]> {
+    return Observable.create((obs: Observer<NoteModel[]>) => {
+      const list = (JSON.parse(localStorage.getItem('SIMPLYNOTE_NOTE_LIST')) as NoteModel[]) || [];
+      const newList = list.filter(n => n.id != note.id);
+      localStorage.setItem('SIMPLYNOTE_NOTE_LIST', JSON.stringify(newList));
+      setTimeout(() => {
+        if (newList) {
+          obs.next(newList);
+        } else {
+          obs.error('Not Found');
+        }
+      }, this.rand());
+    });
+  }
 }

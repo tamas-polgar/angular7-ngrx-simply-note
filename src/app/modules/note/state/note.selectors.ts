@@ -28,3 +28,8 @@ export const selectNoteStateLastEditedId = createSelector(
   selectNoteState,
   (state: NoteState) => state.lastEditedId,
 );
+
+export const selectNoteStateReachedEnd = createSelector(
+  selectNoteState,
+  (state: NoteState) => state.reachedEnd,
+);

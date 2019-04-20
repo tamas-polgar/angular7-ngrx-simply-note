@@ -16,6 +16,7 @@
 </nz-page-header>
 
 <section *ngIf="noteFound; else notFoundTemplate">
+  <p class="error-text" *ngIf="!title && isReady">You dont have a title in your note.</p>
   <nz-divider nzText="Write something"></nz-divider>
 
   <div class="editor-wrapper">

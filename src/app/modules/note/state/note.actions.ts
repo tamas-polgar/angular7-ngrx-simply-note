@@ -4,13 +4,15 @@ import { NoteModel } from 'src/app/models/note.model';
 export enum NoteActionTypes {
   LoadNoteAction = '[NoteActions] Load Notes',
   LoadNoteActionsOk = '[NoteActions] Load Notes success',
-  LoadNoteActionsPending = '[NoteActions] Load Notes pending',
 
   AddNoteAction = '[NoteActions] Add note',
   AddNoteActionOk = '[NoteActions] Add note success',
 
   EditNoteAction = '[NoteActions] Edit note',
   EditNoteActionOk = '[NoteActions] Edit note success',
+
+  DeleteNoteAction = '[NoteActions] Delete note',
+  DeleteNoteActionOk = '[NoteActions] Delete note success',
 
   LoadOneNoteAction = '[NoteActions] Load one Note',
   LoadOneNoteActionsOk = '[NoteActions] Load one Note success',
@@ -23,16 +25,10 @@ export class LoadNotesAction implements Action {
   constructor(public payload: { from: number; to: number }) {}
 }
 
-export class LoadNotesActionPending implements Action {
-  readonly type = NoteActionTypes.LoadNoteActionsPending;
-
-  constructor(public payload: { from: number; to: number }) {}
-}
-
 export class LoadNotesActionOk implements Action {
   readonly type = NoteActionTypes.LoadNoteActionsOk;
 
-  constructor(public payload: { list: NoteModel[] }) {}
+  constructor(public payload: { list: NoteModel[]; reachedEnd?: boolean }) {}
 }
 
 export class AddNoteAction implements Action {
@@ -59,6 +55,18 @@ export class EditNoteActionOk implements Action {
   constructor(public payload: { note: NoteModel }) {}
 }
 
+export class DeleteNoteAction implements Action {
+  readonly type = NoteActionTypes.DeleteNoteAction;
+
+  constructor(public payload: { note: NoteModel }) {}
+}
+
+export class DeleteNoteActionOk implements Action {
+  readonly type = NoteActionTypes.DeleteNoteActionOk;
+
+  constructor(public payload: { list: NoteModel[] }) {}
+}
+
 export class LoadOneNoteAction implements Action {
   readonly type = NoteActionTypes.LoadOneNoteAction;
 
@@ -77,12 +85,13 @@ export class LoadOneNoteActionKo implements Action {
 
 export type NoteActions =
   | LoadNotesAction
-  | LoadNotesActionPending
   | LoadNotesActionOk
   | AddNoteAction
   | AddNoteActionOk
   | EditNoteAction
   | EditNoteActionOk
+  | DeleteNoteAction
+  | DeleteNoteActionOk
   | LoadOneNoteAction
-  | LoadOneNoteActionKo
-  | LoadOneNoteActionOk;
+  | LoadOneNoteActionOk
+  | LoadOneNoteActionKo;

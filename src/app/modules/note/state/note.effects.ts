@@ -8,11 +8,12 @@ import { NoteService } from '../note.service';
 import {
   AddNoteAction,
   AddNoteActionOk,
+  DeleteNoteAction,
+  DeleteNoteActionOk,
   EditNoteAction,
   EditNoteActionOk,
   LoadNotesAction,
   LoadNotesActionOk,
-  LoadNotesActionPending,
   LoadOneNoteAction,
   LoadOneNoteActionKo,
   LoadOneNoteActionOk,
@@ -29,23 +30,18 @@ export class NoteEffects {
 
   @Effect()
   loadOK$: Observable<any> = this.actions$.pipe(
-    ofType<LoadNotesActionPending>(NoteActionTypes.LoadNoteActionsPending),
+    ofType<LoadNotesAction>(NoteActionTypes.LoadNoteAction),
     mergeMap(action => {
       const fro = action.payload.from;
       const to = action.payload.to;
       return this.noteService.getAll(fro, to).pipe(
         map(list => {
-          return new LoadNotesActionOk({ list });
+          return new LoadNotesActionOk({
+            list,
+            reachedEnd: list.length < to ? true : false,
+          });
         }),
       );
-    }),
-  );
-
-  @Effect()
-  loadPending$: Observable<any> = this.actions$.pipe(
-    ofType<LoadNotesAction>(NoteActionTypes.LoadNoteAction),
-    map(action => {
-      return new LoadNotesActionPending({ from: action.payload.from, to: action.payload.to });
     }),
   );
 
@@ -70,6 +66,19 @@ export class NoteEffects {
         map(noteStored => {
           this.msg.success('Note edited successfully');
           return new EditNoteActionOk({ note: noteStored });
+        }),
+      );
+    }),
+  );
+
+  @Effect()
+  DeleteOk$: Observable<any> = this.actions$.pipe(
+    ofType<DeleteNoteAction>(NoteActionTypes.DeleteNoteAction),
+    mergeMap(action => {
+      return this.noteService.delete(action.payload.note).pipe(
+        map(newList => {
+          this.msg.success('Note deleted successfully');
+          return new DeleteNoteActionOk({ list: newList });
         }),
       );
     }),

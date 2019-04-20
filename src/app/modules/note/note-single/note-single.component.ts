@@ -16,6 +16,26 @@ import {
   selectNoteStateLastInsertedId,
 } from '../state/note.selectors';
 
+const NEW_NOTE_INIT = {
+  time: Date.now(),
+  blocks: [
+    {
+      type: 'header',
+      data: {
+        text: 'New note !',
+        level: 2,
+      },
+    },
+    {
+      type: 'paragraph',
+      data: {
+        text: '...',
+      },
+    },
+  ],
+  version: '2.12.4',
+};
+
 @Component({
   selector: 'app-note-single',
   templateUrl: './note-single.component.html',
@@ -53,14 +73,14 @@ export class NoteSingleComponent implements OnInit {
   listenToEditedNote() {
     this.store.pipe(select(selectNoteStateFocusedOn)).subscribe(note => {
       if (note) {
-        this.initEditor(note.content);
+        this.initEditor(note.content as any);
       } else if (note === undefined) {
         this.noteFound = false;
       }
     });
   }
 
-  initEditor(initialData = null) {
+  initEditor(initialData = NEW_NOTE_INIT) {
     this.noteFound = true;
     setTimeout(() => {
       this.editor =
@@ -111,7 +131,7 @@ export class NoteSingleComponent implements OnInit {
 
   async formChanged() {
     this.isReady = true;
-    this.description = '';
+    this.title = this.description = '';
     const blocks = (await this.editor.saver.save()).blocks;
     for (const block of blocks) {
       if (block.type == 'header') {
