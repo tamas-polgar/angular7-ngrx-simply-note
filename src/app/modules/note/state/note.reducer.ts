@@ -55,13 +55,16 @@ export function reducer(state = initialState, action: NoteActions): NoteState {
         focusedOn: undefined,
       };
     case NoteActionTypes.DeleteNoteAction:
-      const newList = state.list.map(n => ({
-        ...n,
-        loading: n.id == action.payload.note.id ? true : false,
-      }));
       return {
         ...state,
-        list: newList,
+        list: state.list.map(note =>
+          note.id != action.payload.note.id
+            ? note
+            : {
+                ...note,
+                loading: true,
+              },
+        ),
       };
     case NoteActionTypes.DeleteNoteActionOk:
       return {
