@@ -4,6 +4,10 @@ Simple app for taking notes
 
 Using Angular & NgRx
 
+## Demo
+
+https://simply-note-mustapha-aouas.firebaseapp.com/
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
