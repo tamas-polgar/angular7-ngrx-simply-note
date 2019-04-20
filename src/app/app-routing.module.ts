@@ -8,6 +8,10 @@ const routes: Routes = [
     redirectTo: 'note',
     pathMatch: 'full',
   },
+  {
+    path: '**',
+    redirectTo: 'note',
+  },
 ];
 
 @NgModule({
