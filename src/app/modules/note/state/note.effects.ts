@@ -29,7 +29,7 @@ export class NoteEffects {
   ) {}
 
   @Effect()
-  loadOK$: Observable<any> = this.actions$.pipe(
+  loadOk$: Observable<any> = this.actions$.pipe(
     ofType<LoadNotesAction>(NoteActionTypes.LoadNoteAction),
     mergeMap(action => {
       const fro = action.payload.from;
@@ -85,7 +85,7 @@ export class NoteEffects {
   );
 
   @Effect()
-  loadOneOK$: Observable<any> = this.actions$.pipe(
+  loadOneOkOrKo$: Observable<any> = this.actions$.pipe(
     ofType<LoadOneNoteAction>(NoteActionTypes.LoadOneNoteAction),
     mergeMap(action => {
       return this.noteService.getOne(action.payload.id).pipe(
