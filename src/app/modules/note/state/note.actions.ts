@@ -2,8 +2,8 @@ import { Action } from '@ngrx/store';
 import { NoteModel } from 'src/app/models/note.model';
 
 export enum NoteActionTypes {
-  LoadNoteAction = '[NoteActions] Load Notes',
-  LoadNoteActionsOk = '[NoteActions] Load Notes success',
+  LoadNotesAction = '[NoteActions] Load Notes',
+  LoadNotesActionsOk = '[NoteActions] Load Notes success',
 
   AddNoteAction = '[NoteActions] Add note',
   AddNoteActionOk = '[NoteActions] Add note success',
@@ -20,13 +20,13 @@ export enum NoteActionTypes {
 }
 
 export class LoadNotesAction implements Action {
-  readonly type = NoteActionTypes.LoadNoteAction;
+  readonly type = NoteActionTypes.LoadNotesAction;
 
   constructor(public payload: { from: number; to: number }) {}
 }
 
 export class LoadNotesActionOk implements Action {
-  readonly type = NoteActionTypes.LoadNoteActionsOk;
+  readonly type = NoteActionTypes.LoadNotesActionsOk;
 
   constructor(public payload: { list: NoteModel[]; reachedEnd?: boolean }) {}
 }

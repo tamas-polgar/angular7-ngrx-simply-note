@@ -20,14 +20,14 @@ export const initialState: NoteState = {
 
 export function reducer(state = initialState, action: NoteActions): NoteState {
   switch (action.type) {
-    case NoteActionTypes.LoadNoteAction:
+    case NoteActionTypes.LoadNotesAction:
       return {
         ...state,
         list: state.list.concat([
           ...Array(action.payload.to - action.payload.from - state.list.length).fill({ loading: true }),
         ]),
       };
-    case NoteActionTypes.LoadNoteActionsOk:
+    case NoteActionTypes.LoadNotesActionsOk:
       return {
         ...state,
         list: action.payload.list,

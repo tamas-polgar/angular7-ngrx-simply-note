@@ -30,7 +30,7 @@ export class NoteEffects {
 
   @Effect()
   loadOk$: Observable<any> = this.actions$.pipe(
-    ofType<LoadNotesAction>(NoteActionTypes.LoadNoteAction),
+    ofType<LoadNotesAction>(NoteActionTypes.LoadNotesAction),
     mergeMap(action => {
       const fro = action.payload.from;
       const to = action.payload.to;
