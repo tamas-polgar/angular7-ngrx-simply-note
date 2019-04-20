@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 import { NoteModel } from 'src/app/models/note.model';
 
+const SIMPLYNOTE_NOTE_LIST = 'SIMPLYNOTE_NOTE_LIST';
+
 @Injectable()
 export class NoteService {
   constructor() {}
@@ -12,7 +14,7 @@ export class NoteService {
 
   getAll(from: number, to: number): Observable<NoteModel[]> {
     return Observable.create((obs: Observer<NoteModel[]>) => {
-      let list = JSON.parse(localStorage.getItem('SIMPLYNOTE_NOTE_LIST')) as NoteModel[];
+      let list = JSON.parse(localStorage.getItem(SIMPLYNOTE_NOTE_LIST)) as NoteModel[];
       list = list ? list.slice(from, to) : [];
       setTimeout(() => {
         obs.next(list);
@@ -22,7 +24,7 @@ export class NoteService {
 
   getOne(id: number): Observable<NoteModel> {
     return Observable.create((obs: Observer<NoteModel>) => {
-      const list = (JSON.parse(localStorage.getItem('SIMPLYNOTE_NOTE_LIST')) as NoteModel[]) || [];
+      const list = (JSON.parse(localStorage.getItem(SIMPLYNOTE_NOTE_LIST)) as NoteModel[]) || [];
       const note = list.filter(n => n.id == id)[0];
       setTimeout(() => {
         if (note) {
@@ -36,9 +38,9 @@ export class NoteService {
 
   post(note: NoteModel): Observable<NoteModel> {
     return Observable.create((obs: Observer<NoteModel>) => {
-      const storedList = (JSON.parse(localStorage.getItem('SIMPLYNOTE_NOTE_LIST')) as any[]) || [];
+      const storedList = (JSON.parse(localStorage.getItem(SIMPLYNOTE_NOTE_LIST)) as any[]) || [];
       storedList.push(note);
-      localStorage.setItem('SIMPLYNOTE_NOTE_LIST', JSON.stringify(storedList));
+      localStorage.setItem(SIMPLYNOTE_NOTE_LIST, JSON.stringify(storedList));
       setTimeout(() => {
         obs.next(note);
       }, this.rand());
@@ -48,7 +50,7 @@ export class NoteService {
   put(note: NoteModel): Observable<NoteModel> {
     const noteCloned: NoteModel = { ...note };
     return Observable.create((obs: Observer<NoteModel>) => {
-      const storedList = (JSON.parse(localStorage.getItem('SIMPLYNOTE_NOTE_LIST')) as NoteModel[]) || [];
+      const storedList = (JSON.parse(localStorage.getItem(SIMPLYNOTE_NOTE_LIST)) as NoteModel[]) || [];
       const newList = [];
       for (const n of storedList) {
         if (n.id == noteCloned.id) {
@@ -58,7 +60,7 @@ export class NoteService {
           newList.push(n);
         }
       }
-      localStorage.setItem('SIMPLYNOTE_NOTE_LIST', JSON.stringify(newList));
+      localStorage.setItem(SIMPLYNOTE_NOTE_LIST, JSON.stringify(newList));
       setTimeout(() => {
         obs.next(noteCloned);
       }, this.rand());
@@ -67,9 +69,9 @@ export class NoteService {
 
   delete(note: NoteModel): Observable<NoteModel[]> {
     return Observable.create((obs: Observer<NoteModel[]>) => {
-      const list = (JSON.parse(localStorage.getItem('SIMPLYNOTE_NOTE_LIST')) as NoteModel[]) || [];
+      const list = (JSON.parse(localStorage.getItem(SIMPLYNOTE_NOTE_LIST)) as NoteModel[]) || [];
       const newList = list.filter(n => n.id != note.id);
-      localStorage.setItem('SIMPLYNOTE_NOTE_LIST', JSON.stringify(newList));
+      localStorage.setItem(SIMPLYNOTE_NOTE_LIST, JSON.stringify(newList));
       setTimeout(() => {
         if (newList) {
           obs.next(newList);
