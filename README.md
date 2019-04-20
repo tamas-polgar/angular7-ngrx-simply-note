@@ -1,6 +1,8 @@
 # SimplyNote
 
-Angular & NgRx
+Simple app for taking notes
+
+Using Angular & NgRx
 
 ## Development server
 
