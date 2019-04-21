@@ -36,6 +36,4 @@ npm install @ngrx/{store,effects,entity,store-devtools,router-store} --save
 
 npm i --save-dev ngrx-store-freeze
 
-
-
 ```
