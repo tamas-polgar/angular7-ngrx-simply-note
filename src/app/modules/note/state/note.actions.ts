@@ -64,7 +64,7 @@ export class DeleteNoteAction implements Action {
 export class DeleteNoteActionOk implements Action {
   readonly type = NoteActionTypes.DeleteNoteActionOk;
 
-  constructor(public payload: { list: NoteModel[] }) {}
+  constructor(public payload: { note: NoteModel }) {}
 }
 
 export class LoadOneNoteAction implements Action {

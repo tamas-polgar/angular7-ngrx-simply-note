@@ -76,9 +76,9 @@ export class NoteEffects {
     ofType<DeleteNoteAction>(NoteActionTypes.DeleteNoteAction),
     mergeMap(action => {
       return this.noteService.delete(action.payload.note).pipe(
-        map(newList => {
+        map(note => {
           this.msg.success('Note deleted successfully');
-          return new DeleteNoteActionOk({ list: newList });
+          return new DeleteNoteActionOk({ note: note });
         }),
       );
     }),

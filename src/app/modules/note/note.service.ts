@@ -39,7 +39,7 @@ export class NoteService {
   post(note: NoteModel): Observable<NoteModel> {
     return Observable.create((obs: Observer<NoteModel>) => {
       const storedList = (JSON.parse(localStorage.getItem(SIMPLYNOTE_NOTE_LIST)) as any[]) || [];
-      storedList.push(note);
+      storedList.unshift(note);
       localStorage.setItem(SIMPLYNOTE_NOTE_LIST, JSON.stringify(storedList));
       setTimeout(() => {
         obs.next(note);
@@ -67,14 +67,14 @@ export class NoteService {
     });
   }
 
-  delete(note: NoteModel): Observable<NoteModel[]> {
-    return Observable.create((obs: Observer<NoteModel[]>) => {
+  delete(note: NoteModel): Observable<NoteModel> {
+    return Observable.create((obs: Observer<NoteModel>) => {
       const list = (JSON.parse(localStorage.getItem(SIMPLYNOTE_NOTE_LIST)) as NoteModel[]) || [];
       const newList = list.filter(n => n.id != note.id);
       localStorage.setItem(SIMPLYNOTE_NOTE_LIST, JSON.stringify(newList));
       setTimeout(() => {
         if (newList) {
-          obs.next(newList);
+          obs.next(note);
         } else {
           obs.error('Not Found');
         }

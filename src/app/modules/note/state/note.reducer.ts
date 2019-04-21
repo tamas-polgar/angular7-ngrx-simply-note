@@ -24,7 +24,7 @@ export function reducer(state = initialState, action: NoteActions): NoteState {
       return {
         ...state,
         list: state.list.concat([
-          ...Array(action.payload.to - action.payload.from - state.list.length).fill({ loading: true }),
+          ...Array(action.payload.to - action.payload.from).fill({ loading: true }),
         ]),
       };
     case NoteActionTypes.LoadNotesActionsOk:
@@ -74,7 +74,7 @@ export function reducer(state = initialState, action: NoteActions): NoteState {
     case NoteActionTypes.DeleteNoteActionOk:
       return {
         ...state,
-        list: action.payload.list,
+        list: state.list.filter(note => note.id != action.payload.note.id),
       };
     default:
       return state;
