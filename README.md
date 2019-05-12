@@ -6,7 +6,7 @@ Using Angular & NgRx
 
 ## Demo
 
-https://ng-simply-note.firebaseapp.com/
+https://smply-note.web.app/
 
 ## Development server
 
